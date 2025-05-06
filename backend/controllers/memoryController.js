@@ -1,5 +1,6 @@
 const Save = require('../models/save');
 
+
 exports.saveGameData = async (req, res) => {
     const { userID, gameDate, failed, difficulty, completed, timeTaken } = req.body;
 
@@ -26,4 +27,14 @@ exports.saveGameData = async (req, res) => {
         console.error('Error saving game data:', error);
         res.status(500).json({ message: 'Error saving game data', error });
     }
+};
+
+exports.getResultHistory = async (req, res) => {
+
+  try {
+    const historyResult = await Save.find().sort("gameDate");
+    return res.status(200).json(historyResult);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching the games result', error });
+  }
 };
